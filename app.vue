@@ -1,7 +1,7 @@
 <template>
   <div>
-    <div class="container mt-2 text-center">
-      <div>
+    <div class="">
+      <div class="my-8 mx-auto max-w-sm text-center">
 
         <h1 class="text-center font-bold text-3xl">Primitive Weight Loss App</h1>
 
@@ -10,12 +10,13 @@
           💩</button>
       </div>
 
-      <div class="mt-12">
+      <div class="mt-12 max-w-sm mx-auto text-center">
         <div class="text-2xl font-bold">{{ hours }} : {{ minutes }} : {{ seconds }}</div>
         <div class="text-2xl my-2">until</div>
-        <div class="text-8xl">🥘</div>
+        <div class="text-8xl"><p>🥘</p></div>
       </div>
 
+      <p class="text-gray-300 text-xs absolute w-full p-2 bottom-1 text-center">P.S. This is not a dietary advice for anyone. This site is only made for <b> web development practices</b>. Enjoy your meal any time 😋</p>
       <div class="hidden">{{ ticker }}</div>
     </div>
   </div>
@@ -49,18 +50,10 @@ const saveCurrentTimeInSecondsToLocalStorage = () => {
 
 onMounted(() => {
   const getTheSavedSecondsFromLocalStorage = localStorage.getItem('savedTimeInSeconds');
-
-  let sinceSeconds = 0;
   if (getTheSavedSecondsFromLocalStorage !== null) {
-    sinceSeconds = Math.floor((Date.now() / 1000) - getTheSavedSecondsFromLocalStorage);
+    remainingSeconds.value = 86400 - (Math.floor((Date.now() / 1000) - getTheSavedSecondsFromLocalStorage));
   }
-
-  remainingSeconds.value = 86400 - sinceSeconds;
 
 });
 
 </script>
-
-<style scoped>
-
-</style>
