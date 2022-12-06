@@ -13,10 +13,13 @@
       <div class="mt-12 max-w-sm mx-auto text-center">
         <div class="text-2xl font-bold">{{ hours }} : {{ minutes }} : {{ seconds }}</div>
         <div class="text-2xl my-2">until</div>
-        <div class="text-8xl"><p>🥘</p></div>
+        <div class="text-8xl">
+          <p>🥘</p>
+        </div>
       </div>
 
-      <p class="text-gray-300 text-xs absolute w-full p-2 bottom-1 text-center">P.S. This is not a dietary advice for anyone. This site is only made for <b> web development practices</b>. Enjoy your meal any time 😋</p>
+      <p class="text-gray-300 text-xs absolute w-full p-2 bottom-1 text-center">P.S. This is not a dietary advice for
+        anyone. This site is only made for <b> web development practices</b>. Enjoy your meal any time 😋</p>
       <div class="hidden">{{ ticker }}</div>
     </div>
   </div>
@@ -37,23 +40,29 @@ const seconds = computed(() => {
   return secondMakeup < 10 ? `0${secondMakeup}` : secondMakeup;
 })
 
-const remainingSeconds = ref(0);
-const ticker = computed(() => { setInterval(function () { remainingSeconds.value-- }, 1000) })
+const remainingSeconds = ref(86400);
+
+const ticker = () => {
+  if (remainingSeconds.value > 0) {
+    setInterval(() => {remainingSeconds.value-- }, 1000)
+    clearInterval()
+  }
+}
 
 
 const saveCurrentTimeInSecondsToLocalStorage = () => {
   const nowInSeconds = Math.floor(Date.now() / 1000);
   localStorage.setItem('savedTimeInSeconds', nowInSeconds);
-
-  return remainingSeconds.value = 86399;
+  
+  ticker();
 }
 
 onMounted(() => {
   const getTheSavedSecondsFromLocalStorage = localStorage.getItem('savedTimeInSeconds');
   if (getTheSavedSecondsFromLocalStorage !== null) {
-    remainingSeconds.value = 86400 - (Math.floor((Date.now() / 1000) - getTheSavedSecondsFromLocalStorage));
+    remainingSeconds.value = 86400 - (Math.floor((Date.now() / 1000) - parseInt(getTheSavedSecondsFromLocalStorage)));
+    ticker();
   }
-
 });
 
 </script>
