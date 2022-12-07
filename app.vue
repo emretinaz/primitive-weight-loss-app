@@ -68,7 +68,7 @@ const remainingTimeForDash = computed(() => {
   return `${timeFraction} 283`
 })
 
-const remainingSeconds = ref(86400);
+const remainingSeconds = ref(0);
 
 const timer = setInterval(() => { remainingSeconds.value-- }, 1000)
 
