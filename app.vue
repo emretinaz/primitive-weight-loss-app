@@ -20,7 +20,6 @@
 
       <p class="text-gray-300 text-xs absolute w-full p-2 bottom-1 text-center">P.S. This is not a dietary advice for
         anyone. This site is only made for <b> web development practices</b>. Enjoy your meal any time 😋</p>
-      <div class="hidden">{{ ticker }}</div>
     </div>
   </div>
 </template>
@@ -42,27 +41,27 @@ const seconds = computed(() => {
 
 const remainingSeconds = ref(86400);
 
-const ticker = () => {
-  if (remainingSeconds.value > 0) {
-    setInterval(() => {remainingSeconds.value-- }, 1000)
-    clearInterval()
-  }
-}
-
+const timer = setInterval(() => { remainingSeconds.value-- }, 1000)
 
 const saveCurrentTimeInSecondsToLocalStorage = () => {
   const nowInSeconds = Math.floor(Date.now() / 1000);
   localStorage.setItem('savedTimeInSeconds', nowInSeconds);
-  
-  ticker();
+
+  remainingSeconds.value = 86400;
+
+  timer
 }
 
 onMounted(() => {
   const getTheSavedSecondsFromLocalStorage = localStorage.getItem('savedTimeInSeconds');
   if (getTheSavedSecondsFromLocalStorage !== null) {
     remainingSeconds.value = 86400 - (Math.floor((Date.now() / 1000) - parseInt(getTheSavedSecondsFromLocalStorage)));
-    ticker();
+    timer
   }
 });
+
+onUnmounted(() => {
+  clearInterval(timer)
+})
 
 </script>
