@@ -10,13 +10,37 @@
           💩</button>
       </div>
 
-      <div class="mt-12 max-w-sm mx-auto text-center">
-        <div class="text-2xl font-bold">{{ hours }} : {{ minutes }} : {{ seconds }}</div>
-        <div class="text-2xl my-2">until</div>
-        <div class="text-8xl">
-          <p>🥘</p>
+      <div class="mt-12 max-w-sm mx-auto flex justify-center">
+
+        <div v-if="(remainingSeconds > 0)" class="base-timer">
+          <svg class="base-timer__svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <g class="base-timer__circle">
+              <circle class="base-timer__path-elapsed" cx="50" cy="50" r="45"></circle>
+              <path :stroke-dasharray="remainingTimeForDash" class="base-timer__path-remaining" d="
+            M 50, 50
+            m -45, 0
+            a 45,45 0 1,0 90,0
+            a 45,45 0 1,0 -90,0
+          "></path>
+            </g>
+          </svg>
+
+          <div class="base-timer__label">
+            <p class="text-5xl">Don't Eat</p>
+            <p class="text-gray-300 mt-5">{{ hours }} : {{ minutes }} : {{ seconds }}</p>
+          </div>
+        </div>
+
+        <div v-else-if="(remainingSeconds < 1)"
+          class="mt-12 max-w-sm mx-auto flex flex-col justify-center items-center">
+          <p class="text-4xl font-bold text-center">Enjoy Your Meal</p>
+          <p class="mt-5 text-9xl">🥘</p>
         </div>
       </div>
+
+
+
+
 
       <p class="text-gray-300 text-xs absolute w-full p-2 bottom-1 text-center">P.S. This is not a dietary advice for
         anyone. This site is only made for <b> web development practices</b>. Enjoy your meal any time 😋</p>
@@ -37,6 +61,11 @@ const minutes = computed(() => {
 const seconds = computed(() => {
   const secondMakeup = remainingSeconds.value - (hours.value * 3600) - (minutes.value * 60);
   return secondMakeup < 10 ? `0${secondMakeup}` : secondMakeup;
+})
+
+const remainingTimeForDash = computed(() => {
+  const timeFraction = (278 * (1 - (remainingSeconds.value / 86400))).toFixed(2);
+  return `${timeFraction} 283`
 })
 
 const remainingSeconds = ref(86400);
@@ -65,3 +94,47 @@ onUnmounted(() => {
 })
 
 </script>
+
+<style lang="scss">
+.base-timer {
+  position: relative;
+  width: 300px;
+  height: 300px;
+
+  &__svg {
+    transform: scaleX(-1);
+  }
+
+  &__circle {
+    fill: none;
+    stroke: none;
+  }
+
+  &__path-elapsed {
+    stroke-width: 7px;
+    stroke: rgb(246, 246, 246);
+  }
+
+  &__path-remaining {
+    stroke-width: 6px;
+    stroke-linecap: round;
+    transform: rotate(90deg);
+    transform-origin: center;
+    transition: 1s linear all;
+    fill-rule: nonzero;
+    stroke: currentColor;
+    color: orange;
+  }
+
+  &__label {
+    position: absolute;
+    width: 300px;
+    height: 300px;
+    top: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+}
+</style>
