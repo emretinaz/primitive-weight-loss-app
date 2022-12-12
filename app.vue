@@ -38,12 +38,11 @@
         </div>
       </div>
 
-
-
-
-
-      <p class="text-gray-300 text-xs absolute w-full p-2 bottom-1 text-center">P.S. This is not a dietary advice for
+      <div class="absolute w-full bottom-1">
+      <p class="text-gray-500 p-2 text-center mb-8 text-base">Simplicity is the ultimate sophistication <br><i class="text-sm text-gray-400">Leonardo da Vinci</i></p>
+      <p class="text-gray-300 text-xs p-2 text-center">P.S. This is not a dietary advice for
         anyone. This site is only made for <b> web development practices</b>. Enjoy your meal any time 😋</p>
+      </div>
     </div>
   </div>
 </template>
