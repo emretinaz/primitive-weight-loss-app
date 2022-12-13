@@ -1,7 +1,6 @@
-# Nuxt 3 Minimal Starter
+Site URL: [Primitive Weight Loss App](https://primitiveweightloss.netlify.app/)
 
-Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
-
+[![Netlify Status](https://api.netlify.com/api/v1/badges/eeb97243-f6e0-48d1-b40a-4b08ee9462f6/deploy-status)](https://app.netlify.com/sites/primitiveweightloss/deploys)
 ## Setup
 
 Make sure to install the dependencies:
