@@ -1,7 +1,7 @@
 <template>
-  <div>
-    <div class="">
-      <div class="my-8 mx-auto max-w-sm text-center">
+  <div class="">
+    <div>
+      <div class="mt-4 mx-auto max-w-sm text-center">
 
         <h1 class="text-center font-bold text-3xl">Primitive Weight Loss App</h1>
 
@@ -38,11 +38,11 @@
         </div>
       </div>
 
-      <div class="absolute w-full bottom-1">
-        <p class="text-gray-500 p-2 text-center mb-8 text-base">Simplicity is the ultimate sophistication <br><i
-            class="text-sm text-gray-400">Leonardo da Vinci</i></p>
+      <div class="mt-12 max-w-sm mx-auto">
+        <p class="text-gray-500 p-2 text-center text-base">Simplicity is the ultimate sophistication <br><i
+            class="text-sm text-gray-400">- Leonardo da Vinci</i></p>
         <p class="text-gray-300 text-xs p-2 text-center">P.S. This is not a dietary advice for
-          anyone. This site is only made for <b> web development practices</b>. Enjoy your meal any time 😋</p>
+          anyone. This site is only made for <b> web development practices</b> and for 📱. <br> Enjoy your meal any time 😋</p>
       </div>
     </div>
   </div>
