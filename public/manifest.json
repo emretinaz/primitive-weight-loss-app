@@ -1,11 +1,13 @@
 {
-    "theme_color": "#baf177",
-    "background_color": "#baf177",
+    "theme_color": "#fff",
+    "background_color": "#fff",
     "display": "standalone",
     "scope": "/",
     "start_url": "/",
     "name": "Primitive Weight Loss App",
     "short_name": "PWL",
+    "categories": ["education"],
+    "description": "This site is made for web development practices. Does not use as dietry plan.",
     "icons": [
         {
             "src": "/icon-192x192.png",
