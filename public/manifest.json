@@ -2,6 +2,7 @@
     "theme_color": "#fff",
     "background_color": "#fff",
     "display": "standalone",
+    "orientation": "portrait",
     "scope": "/",
     "start_url": "/",
     "name": "Primitive Weight Loss App",
