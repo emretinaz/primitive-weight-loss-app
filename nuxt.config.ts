@@ -7,6 +7,7 @@ export default defineNuxtConfig({
       meta: [
         { name: 'description', content: 'Primitive Weight Loss App' },
         { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+        { name:"google-site-verification", content:"36jNV77pgN15JtNg5BRyAru1a58XqOkApZGfz2EAILQ" } 
       ],
       link: [
         { rel: 'manifest', href: '/manifest.json' },
