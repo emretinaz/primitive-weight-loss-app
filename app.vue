@@ -5,9 +5,13 @@
 
         <h1 class="text-center font-bold text-3xl">Primitive Weight Loss App</h1>
 
-        <button @click="saveCurrentTimeInSecondsToLocalStorage"
-          class="mt-8 bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded">just
-          💩</button>
+        <div class="h-12 my-16">
+          <button @click="saveCurrentTimeInSecondsToLocalStorage"
+            class="py-4 px-6 text-white text-xl font-bold bg-blue-500 hover:bg-blue-600 rounded-2xl border-gray-300 border-2 border-b-[6px] active:border-b-[2px] active:translate-y-[4px] active:border-[2px] ">
+            just 💩
+          </button>
+        </div>
+
       </div>
 
       <div class="mt-12 max-w-sm mx-auto flex justify-center">
@@ -42,7 +46,8 @@
         <p class="text-gray-500 p-2 text-center text-base">Simplicity is the ultimate sophistication <br><i
             class="text-sm text-gray-400">- Leonardo da Vinci</i></p>
         <p class="text-gray-300 text-xs p-2 text-center">P.S. This is not a dietary advice for
-          anyone. This site is only made for <b> web development practices</b> and for 📱. <br> Enjoy your meal any time 😋</p>
+          anyone. This site is only made for <b> web development practices</b> and for 📱. <br> Enjoy your meal any time
+          😋</p>
       </div>
     </div>
   </div>
@@ -136,5 +141,25 @@ onUnmounted(() => {
     align-items: center;
     justify-content: center;
   }
+}
+
+.submit-button {
+  border-radius: 16px;
+  border: 2px solid lightgray;
+  border-bottom: 6px solid lightgray;
+  margin-top: 16px;
+  transition: all 0.1s;
+  display: inline-flex;
+  padding: 12px 16px;
+}
+
+.submit-button:hover {
+  // background-color: #ddf4ff;
+  // border-color: #1cb0f6;
+}
+
+.submit-button:active {
+  border-bottom: 2px solid #1cb0f6;
+  transform: translateY(4px);
 }
 </style>
