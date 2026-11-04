@@ -124,7 +124,7 @@ const ringDash = computed(() => `${(RING_ARC_LENGTH * progress.value).toFixed(2)
 
 .start-area {
   height: 3rem;
-  margin: 4rem 0;
+  margin: 3rem 0;
   display: flex;
   justify-content: center;
 }
