@@ -66,7 +66,7 @@
         Install app
       </UButton>
       <p v-else-if="showIosHint" class="install-hint">
-        To install, tap Share, then “Add to Home Screen”.
+        Open this page in Safari, tap Share, then “Add to Home Screen”.
       </p>
     </div>
 
