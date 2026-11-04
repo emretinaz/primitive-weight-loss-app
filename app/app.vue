@@ -55,6 +55,21 @@
         😋</p>
     </footer>
 
+    <div class="install-area">
+      <UButton
+        v-if="canInstall"
+        color="primary"
+        variant="soft"
+        icon="i-lucide-download"
+        @click="install"
+      >
+        Install app
+      </UButton>
+      <p v-else-if="showIosHint" class="install-hint">
+        To install, tap Share, then “Add to Home Screen”.
+      </p>
+    </div>
+
     <div class="settings-area">
       <UButton
         icon="i-lucide-settings"
@@ -80,6 +95,7 @@
 useHead({ htmlAttrs: { lang: 'en' } })
 
 const settingsOpen = ref(false)
+const { canInstall, showIosHint, install } = usePwaInstall()
 const { fastHours, durationSeconds } = useFastSettings()
 const { status, progress, clock, start } = useFastingTimer(durationSeconds)
 
@@ -112,6 +128,19 @@ const ringDash = computed(() => `${(RING_ARC_LENGTH * progress.value).toFixed(2)
 
 .header {
   text-align: center;
+}
+
+.install-area {
+  margin-top: 2rem;
+  display: flex;
+  justify-content: center;
+  text-align: center;
+}
+
+.install-hint {
+  max-width: 18rem;
+  font-size: 0.875rem;
+  color: var(--ui-text-toned);
 }
 
 .settings-area {
