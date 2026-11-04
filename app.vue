@@ -75,22 +75,22 @@ const remainingTimeForDash = computed(() => {
 
 const remainingSeconds = ref(0);
 
-const timer = setInterval(() => { remainingSeconds.value-- }, 1000)
+let timer
 
 const saveCurrentTimeInSecondsToLocalStorage = () => {
   const nowInSeconds = Math.floor(Date.now() / 1000);
   localStorage.setItem('savedTimeInSeconds', nowInSeconds);
 
   remainingSeconds.value = 86400;
-
-  timer
 }
 
 onMounted(() => {
+  // Browser-only: the interval must not start during SSR.
+  timer = setInterval(() => { remainingSeconds.value-- }, 1000)
+
   const getTheSavedSecondsFromLocalStorage = localStorage.getItem('savedTimeInSeconds');
   if (getTheSavedSecondsFromLocalStorage !== null) {
     remainingSeconds.value = 86400 - (Math.floor((Date.now() / 1000) - parseInt(getTheSavedSecondsFromLocalStorage)));
-    timer
   }
 });
 
