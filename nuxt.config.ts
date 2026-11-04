@@ -1,6 +1,21 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  modules: ['@nuxt/ui'],
+  modules: ['@nuxt/ui', '@nuxtjs/robots', '@vite-pwa/nuxt'],
+  // Prerender the home page to a static file so the service worker can cache it for offline use
+  nitro: {
+    prerender: {
+      routes: ['/'],
+    },
+  },
+  pwa: {
+    // Keep our own public/manifest.json (already linked in the head)
+    manifest: false,
+    registerType: 'autoUpdate',
+    workbox: {
+      globPatterns: ['**/*.{js,css,html,png,svg,json}'],
+      navigateFallback: '/',
+    },
+  },
   css: ['~/assets/css/main.css'],
   app: {
     head: {
@@ -12,6 +27,15 @@ export default defineNuxtConfig({
       ],
       link: [
         { rel: 'manifest', href: '/manifest.json' },
+        { rel: 'icon', type: 'image/png', sizes: '256x256', href: '/logo-256x256.png' },
+        { rel: 'apple-touch-icon', sizes: '180x180', href: '/apple-touch-icon.png' },
+      ]
+    }
+  },
+  vite: {
+    optimizeDeps: {
+      include: [
+        '@vue/devtools-core',
       ]
     }
   }
