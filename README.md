@@ -60,3 +60,5 @@ nuxt.config.ts           # modules, CSS, page head
 ## 🌍 Deployment
 
 Hosted on Netlify at [primitiveweightloss.netlify.app](https://primitiveweightloss.netlify.app/).
+
+Netlify builds the **`main`** branch for production, so merging to `main` publishes the site.
