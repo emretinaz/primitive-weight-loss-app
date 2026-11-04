@@ -1,6 +1,6 @@
 <template>
-  <UContainer class="py-6 max-w-sm">
-    <header class="text-center">
+  <UContainer class="app">
+    <header class="header">
       <h1 class="page-title">Primitive Weight Loss App</h1>
 
       <div class="start-area">
@@ -109,6 +109,16 @@ onUnmounted(() => {
   margin: 4rem 0;
   display: flex;
   justify-content: center;
+}
+
+.app {
+  padding-top: 1.5rem;
+  padding-bottom: 1.5rem;
+  max-width: 24rem;
+}
+
+.header {
+  text-align: center;
 }
 
 /* Tactile "pressed" button effect */
