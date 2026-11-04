@@ -8,7 +8,7 @@
           size="xl"
           color="primary"
           class="start-button"
-          @click="saveCurrentTimeInSecondsToLocalStorage"
+          @click="start"
         >
           just 💩
         </UButton>
@@ -16,13 +16,18 @@
     </header>
 
     <main class="timer-area">
-      <div v-if="!mounted" class="base-timer-placeholder" aria-hidden="true"></div>
+      <div v-if="status === 'loading'" class="base-timer-placeholder" aria-hidden="true"></div>
 
-      <div v-else-if="(remainingSeconds > 0)" class="base-timer">
+      <div v-else-if="status === 'idle'" class="idle" role="status">
+        <p class="idle__title">Ready when you are</p>
+        <p class="idle__text">Tap the button to start your 24-hour fast.</p>
+      </div>
+
+      <div v-else-if="status === 'fasting'" class="base-timer">
         <svg class="base-timer__svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
           <g class="base-timer__circle">
             <circle class="base-timer__path-elapsed" cx="50" cy="50" r="45"></circle>
-            <path :stroke-dasharray="remainingTimeForDash" class="base-timer__path-remaining" d="
+            <path :stroke-dasharray="ringDash" class="base-timer__path-remaining" d="
             M 50, 50
             m -45, 0
             a 45,45 0 1,0 90,0
@@ -33,13 +38,13 @@
 
         <div class="base-timer__label">
           <p class="timer-title">Don't Eat</p>
-          <p class="timer-digits" role="timer">{{ hours }} : {{ minutes }} : {{ seconds }}</p>
+          <p class="timer-digits" role="timer">{{ clock.hours }} : {{ clock.minutes }} : {{ clock.seconds }}</p>
         </div>
       </div>
 
-      <div v-else-if="(remainingSeconds < 1)" class="done" role="status" aria-live="polite">
+      <div v-else class="done" role="status" aria-live="polite">
         <p class="done__title">Enjoy Your Meal</p>
-        <p class="done__emoji">🥘</p>
+        <p class="done__emoji" aria-hidden="true">🥘</p>
       </div>
     </main>
 
@@ -52,57 +57,16 @@
   </UContainer>
 </template>
 
-<script setup>
+<script setup lang="ts">
 useHead({ htmlAttrs: { lang: 'en' } })
 
-const mounted = ref(false)
+const { status, progress, clock, start } = useFastingTimer()
 
-const hours = computed(() => {
-  const hoursMakeup = Math.floor(remainingSeconds.value / 3600);
-  return hoursMakeup < 10 ? `0${hoursMakeup}` : hoursMakeup;
-})
-const minutes = computed(() => {
-  const minutesMakeup = Math.floor((remainingSeconds.value - (hours.value * 3600)) / 60)
-  return minutesMakeup < 10 ? `0${minutesMakeup}` : minutesMakeup;
-})
-const seconds = computed(() => {
-  const secondMakeup = remainingSeconds.value - (hours.value * 3600) - (minutes.value * 60);
-  return secondMakeup < 10 ? `0${secondMakeup}` : secondMakeup;
-})
+// The ring is a stroke-dash arc. 278 is the arc length and 283 the full circumference.
+const RING_ARC_LENGTH = 278
+const RING_CIRCUMFERENCE = 283
 
-const remainingTimeForDash = computed(() => {
-  const timeFraction = (278 * (1 - (remainingSeconds.value / 86400))).toFixed(2);
-  return `${timeFraction} 283`
-})
-
-const remainingSeconds = ref(0);
-
-let timer
-
-const saveCurrentTimeInSecondsToLocalStorage = () => {
-  const nowInSeconds = Math.floor(Date.now() / 1000);
-  localStorage.setItem('savedTimeInSeconds', nowInSeconds);
-
-  remainingSeconds.value = 86400;
-}
-
-onMounted(() => {
-  // Browser-only: the interval must not start during SSR.
-  timer = setInterval(() => { remainingSeconds.value-- }, 1000)
-
-  const getTheSavedSecondsFromLocalStorage = localStorage.getItem('savedTimeInSeconds');
-  if (getTheSavedSecondsFromLocalStorage !== null) {
-    remainingSeconds.value = 86400 - (Math.floor((Date.now() / 1000) - parseInt(getTheSavedSecondsFromLocalStorage)));
-  }
-
-  // Only render the timer after reading storage, so SSR never shows the wrong state.
-  mounted.value = true;
-});
-
-onUnmounted(() => {
-  clearInterval(timer)
-})
-
+const ringDash = computed(() => `${(RING_ARC_LENGTH * progress.value).toFixed(2)} ${RING_CIRCUMFERENCE}`)
 </script>
 
 <style scoped>
@@ -155,6 +119,26 @@ onUnmounted(() => {
   position: relative;
   width: 300px;
   height: 300px;
+}
+
+.idle {
+  width: 300px;
+  min-height: 300px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.idle__title {
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.idle__text {
+  margin-top: 0.75rem;
+  color: var(--ui-text-toned);
 }
 
 .base-timer__svg {

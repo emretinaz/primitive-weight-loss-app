@@ -1,6 +1,6 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  modules: ['@nuxt/ui', '@nuxtjs/robots', '@vite-pwa/nuxt'],
+  modules: ['@nuxt/ui', '@nuxtjs/robots', '@vite-pwa/nuxt', '@vueuse/nuxt'],
   // Prerender the home page to a static file so the service worker can cache it for offline use
   nitro: {
     prerender: {
