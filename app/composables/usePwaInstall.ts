@@ -32,6 +32,8 @@ export function usePwaInstall() {
   const canInstall = computed(() => deferredPrompt.value !== null && !isStandalone.value)
   // iOS users outside Safari need to open the page there before they can install it.
   const showIosHint = computed(() => isIos.value && !isSafari.value && !isStandalone.value)
+  // Users already in Safari on iOS can install straight from the Share menu.
+  const showIosSafariHint = computed(() => isSafari.value && !isStandalone.value)
 
   function onBeforeInstallPrompt(event: Event) {
     // Stop the browser's own mini-infobar so we control when the prompt appears.
@@ -68,5 +70,5 @@ export function usePwaInstall() {
     return outcome
   }
 
-  return { canInstall, showIosHint, install }
+  return { canInstall, showIosHint, showIosSafariHint, install }
 }

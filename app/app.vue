@@ -1,7 +1,7 @@
 <template>
   <UContainer class="app">
     <header class="header">
-      <h1 class="page-title">Primitive Weight Loss App</h1>
+      <h1 class="page-title">Primitive Weight Loss</h1>
 
       <div class="start-area">
         <UButton
@@ -68,6 +68,9 @@
       <p v-else-if="showIosHint" class="install-hint">
         Open this page in Safari, tap Share, then “Add to Home Screen”.
       </p>
+      <p v-else-if="showIosSafariHint" class="install-hint">
+        Tap Share, then “Add to Home Screen”.
+      </p>
     </div>
 
     <div class="settings-area">
@@ -95,7 +98,7 @@
 useHead({ htmlAttrs: { lang: 'en' } })
 
 const settingsOpen = ref(false)
-const { canInstall, showIosHint, install } = usePwaInstall()
+const { canInstall, showIosHint, showIosSafariHint, install } = usePwaInstall()
 const { fastHours, durationSeconds } = useFastSettings()
 const { status, progress, clock, start } = useFastingTimer(durationSeconds)
 
