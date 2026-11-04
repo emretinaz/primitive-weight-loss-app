@@ -16,8 +16,10 @@
     </header>
 
     <main class="timer-area">
-      <div v-if="(remainingSeconds > 0)" class="base-timer">
-        <svg class="base-timer__svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+      <div v-if="!mounted" class="base-timer-placeholder" aria-hidden="true"></div>
+
+      <div v-else-if="(remainingSeconds > 0)" class="base-timer">
+        <svg class="base-timer__svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
           <g class="base-timer__circle">
             <circle class="base-timer__path-elapsed" cx="50" cy="50" r="45"></circle>
             <path :stroke-dasharray="remainingTimeForDash" class="base-timer__path-remaining" d="
@@ -31,11 +33,11 @@
 
         <div class="base-timer__label">
           <p class="timer-title">Don't Eat</p>
-          <p class="timer-digits">{{ hours }} : {{ minutes }} : {{ seconds }}</p>
+          <p class="timer-digits" role="timer">{{ hours }} : {{ minutes }} : {{ seconds }}</p>
         </div>
       </div>
 
-      <div v-else-if="(remainingSeconds < 1)" class="done">
+      <div v-else-if="(remainingSeconds < 1)" class="done" role="status" aria-live="polite">
         <p class="done__title">Enjoy Your Meal</p>
         <p class="done__emoji">🥘</p>
       </div>
@@ -51,6 +53,9 @@
 </template>
 
 <script setup>
+useHead({ htmlAttrs: { lang: 'en' } })
+
+const mounted = ref(false)
 
 const hours = computed(() => {
   const hoursMakeup = Math.floor(remainingSeconds.value / 3600);
@@ -89,6 +94,9 @@ onMounted(() => {
   if (getTheSavedSecondsFromLocalStorage !== null) {
     remainingSeconds.value = 86400 - (Math.floor((Date.now() / 1000) - parseInt(getTheSavedSecondsFromLocalStorage)));
   }
+
+  // Only render the timer after reading storage, so SSR never shows the wrong state.
+  mounted.value = true;
 });
 
 onUnmounted(() => {
@@ -142,7 +150,8 @@ onUnmounted(() => {
   justify-content: center;
 }
 
-.base-timer {
+.base-timer,
+.base-timer-placeholder {
   position: relative;
   width: 300px;
   height: 300px;
@@ -221,18 +230,18 @@ onUnmounted(() => {
 .quote {
   padding: 0.5rem;
   text-align: center;
-  color: var(--ui-text-muted);
+  color: var(--ui-text-toned);
 }
 
 .quote__author {
   font-size: 0.875rem;
-  color: var(--ui-text-dimmed);
+  color: var(--ui-text-toned);
 }
 
 .disclaimer {
   padding: 0.5rem;
   text-align: center;
   font-size: 0.75rem;
-  color: var(--ui-text-dimmed);
+  color: var(--ui-text-toned);
 }
 </style>
