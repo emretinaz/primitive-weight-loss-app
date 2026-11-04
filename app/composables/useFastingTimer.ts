@@ -1,4 +1,4 @@
-/** Length of one fast, in seconds (24 hours). */
+/** Default length of one fast, in seconds (24 hours). */
 export const FAST_DURATION_SECONDS = 86400
 
 /** localStorage key holding the fast's start time as Unix seconds. */
@@ -13,13 +13,17 @@ export interface ClockParts {
 }
 
 /**
- * Seconds left in a fast that started at `startedAtSeconds`.
- * Clamped to [0, FAST_DURATION_SECONDS], so a start time in the future
+ * Seconds left in a fast that started at `startedAtSeconds` and lasts `durationSeconds`.
+ * Clamped to [0, durationSeconds], so a start time in the future
  * (clock skew or a hand-edited value) cannot show more than a full fast.
  */
-export function getRemainingSeconds(startedAtSeconds: number, nowSeconds: number): number {
+export function getRemainingSeconds(
+  startedAtSeconds: number,
+  nowSeconds: number,
+  durationSeconds: number = FAST_DURATION_SECONDS,
+): number {
   const elapsed = Math.max(0, Math.floor(nowSeconds - startedAtSeconds))
-  return Math.min(FAST_DURATION_SECONDS, Math.max(0, FAST_DURATION_SECONDS - elapsed))
+  return Math.min(durationSeconds, Math.max(0, durationSeconds - elapsed))
 }
 
 /** Splits seconds into zero-padded HH / MM / SS strings. */
@@ -35,10 +39,10 @@ export function formatClock(totalSeconds: number): ClockParts {
 }
 
 /**
- * Timer state derived from a stored start time.
+ * Timer state derived from a stored start time and a fast length.
  * The remaining time is computed from timestamps, so background tabs cannot drift.
  */
-export function useFastingTimer() {
+export function useFastingTimer(durationSeconds: Ref<number> = ref(FAST_DURATION_SECONDS)) {
   const startedAt = ref<number | null>(null)
   const mounted = ref(false)
 
@@ -48,8 +52,8 @@ export function useFastingTimer() {
   const nowSeconds = computed(() => now.value.getTime() / 1000)
 
   const remainingSeconds = computed(() => {
-    if (startedAt.value === null) return FAST_DURATION_SECONDS
-    return getRemainingSeconds(startedAt.value, nowSeconds.value)
+    if (startedAt.value === null) return durationSeconds.value
+    return getRemainingSeconds(startedAt.value, nowSeconds.value, durationSeconds.value)
   })
 
   const status = computed<FastStatus>(() => {
@@ -59,7 +63,7 @@ export function useFastingTimer() {
   })
 
   // Fraction of the fast that has elapsed, from 0 to 1.
-  const progress = computed(() => (FAST_DURATION_SECONDS - remainingSeconds.value) / FAST_DURATION_SECONDS)
+  const progress = computed(() => (durationSeconds.value - remainingSeconds.value) / durationSeconds.value)
 
   const clock = computed(() => formatClock(remainingSeconds.value))
 

@@ -20,7 +20,7 @@
 
       <div v-else-if="status === 'idle'" class="idle" role="status">
         <p class="idle__title">Ready when you are</p>
-        <p class="idle__text">Tap the button to start your 24-hour fast.</p>
+        <p class="idle__text">Tap the button to start your {{ fastHours }}-hour fast.</p>
       </div>
 
       <div v-else-if="status === 'fasting'" class="base-timer">
@@ -54,13 +54,34 @@
         anyone. This site is only made for <b> web development practices</b> and for 📱. <br> Enjoy your meal any time
         😋</p>
     </footer>
+
+    <div class="settings-area">
+      <UButton
+        icon="i-lucide-settings"
+        color="neutral"
+        variant="ghost"
+        aria-label="Settings"
+        @click="settingsOpen = true"
+      />
+    </div>
+
+    <UModal v-model:open="settingsOpen" title="Settings">
+      <template #body>
+        <fieldset class="settings">
+          <legend class="settings__legend">Fast length</legend>
+          <URadioGroup v-model="fastHours" :items="FAST_LENGTH_OPTIONS" orientation="vertical" />
+        </fieldset>
+      </template>
+    </UModal>
   </UContainer>
 </template>
 
 <script setup lang="ts">
 useHead({ htmlAttrs: { lang: 'en' } })
 
-const { status, progress, clock, start } = useFastingTimer()
+const settingsOpen = ref(false)
+const { fastHours, durationSeconds } = useFastSettings()
+const { status, progress, clock, start } = useFastingTimer(durationSeconds)
 
 // The ring is a stroke-dash arc. 278 is the arc length and 283 the full circumference.
 const RING_ARC_LENGTH = 278
@@ -91,6 +112,23 @@ const ringDash = computed(() => `${(RING_ARC_LENGTH * progress.value).toFixed(2)
 
 .header {
   text-align: center;
+}
+
+.settings-area {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: center;
+}
+
+.settings {
+  border: 0;
+  padding: 0;
+  margin: 0;
+}
+
+.settings__legend {
+  font-weight: 700;
+  margin-bottom: 0.75rem;
 }
 
 /* Tactile "pressed" button effect */
