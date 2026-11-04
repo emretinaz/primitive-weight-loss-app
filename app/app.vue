@@ -1,7 +1,7 @@
 <template>
   <UContainer class="app">
     <header class="header">
-      <h1 class="page-title">Primitive Weight Loss App</h1>
+      <h1 class="page-title">Primitive Weight Loss</h1>
 
       <div class="start-area">
         <UButton
@@ -66,7 +66,10 @@
         Install app
       </UButton>
       <p v-else-if="showIosHint" class="install-hint">
-        To install, tap Share, then “Add to Home Screen”.
+        Open this page in Safari, tap Share, then “Add to Home Screen”.
+      </p>
+      <p v-else-if="showIosSafariHint" class="install-hint">
+        Tap Share, then “Add to Home Screen”.
       </p>
     </div>
 
@@ -84,7 +87,13 @@
       <template #body>
         <fieldset class="settings">
           <legend class="settings__legend">Fast length</legend>
-          <URadioGroup v-model="fastHours" :items="FAST_LENGTH_OPTIONS" orientation="vertical" />
+          <URadioGroup
+            v-model="fastHours"
+            :items="FAST_LENGTH_OPTIONS"
+            orientation="vertical"
+            size="xl"
+            class="settings__options"
+          />
         </fieldset>
       </template>
     </UModal>
@@ -95,7 +104,7 @@
 useHead({ htmlAttrs: { lang: 'en' } })
 
 const settingsOpen = ref(false)
-const { canInstall, showIosHint, install } = usePwaInstall()
+const { canInstall, showIosHint, showIosSafariHint, install } = usePwaInstall()
 const { fastHours, durationSeconds } = useFastSettings()
 const { status, progress, clock, start } = useFastingTimer(durationSeconds)
 
@@ -157,7 +166,14 @@ const ringDash = computed(() => `${(RING_ARC_LENGTH * progress.value).toFixed(2)
 
 .settings__legend {
   font-weight: 700;
-  margin-bottom: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+/* Space out the options so each one is easier to tap */
+.settings__options :deep([role="radiogroup"]) {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
 }
 
 /* Tactile "pressed" button effect */

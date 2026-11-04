@@ -10,16 +10,30 @@ export function isIosDevice(userAgent: string): boolean {
 }
 
 /**
+ * True only for Safari on iOS. Chrome, Firefox, Edge and Opera on iOS use other tokens,
+ * and in-app browsers omit the "Safari" token.
+ */
+export function isIosSafari(userAgent: string): boolean {
+  return isIosDevice(userAgent)
+    && /Safari/i.test(userAgent)
+    && !/CriOS|FxiOS|EdgiOS|OPiOS|OPT\//i.test(userAgent)
+}
+
+/**
  * Install state for the PWA.
  * Chromium browsers give us a prompt to trigger later. iOS users get a text hint instead.
  */
 export function usePwaInstall() {
   const deferredPrompt = shallowRef<BeforeInstallPromptEvent | null>(null)
   const isIos = ref(false)
+  const isSafari = ref(false)
   const isStandalone = ref(false)
 
   const canInstall = computed(() => deferredPrompt.value !== null && !isStandalone.value)
-  const showIosHint = computed(() => isIos.value && !isStandalone.value)
+  // iOS users outside Safari need to open the page there before they can install it.
+  const showIosHint = computed(() => isIos.value && !isSafari.value && !isStandalone.value)
+  // Users already in Safari on iOS can install straight from the Share menu.
+  const showIosSafariHint = computed(() => isSafari.value && !isStandalone.value)
 
   function onBeforeInstallPrompt(event: Event) {
     // Stop the browser's own mini-infobar so we control when the prompt appears.
@@ -34,6 +48,7 @@ export function usePwaInstall() {
 
   onMounted(() => {
     isIos.value = isIosDevice(navigator.userAgent)
+    isSafari.value = isIosSafari(navigator.userAgent)
     isStandalone.value = window.matchMedia('(display-mode: standalone)').matches
       || (navigator as Navigator & { standalone?: boolean }).standalone === true
     window.addEventListener('beforeinstallprompt', onBeforeInstallPrompt)
@@ -55,5 +70,5 @@ export function usePwaInstall() {
     return outcome
   }
 
-  return { canInstall, showIosHint, install }
+  return { canInstall, showIosHint, showIosSafariHint, install }
 }
