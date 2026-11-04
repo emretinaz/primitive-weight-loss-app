@@ -12,10 +12,14 @@ export interface ClockParts {
   seconds: string
 }
 
-/** Seconds left in a fast that started at `startedAtSeconds`, never below zero. */
+/**
+ * Seconds left in a fast that started at `startedAtSeconds`.
+ * Clamped to [0, FAST_DURATION_SECONDS], so a start time in the future
+ * (clock skew or a hand-edited value) cannot show more than a full fast.
+ */
 export function getRemainingSeconds(startedAtSeconds: number, nowSeconds: number): number {
-  const elapsed = Math.floor(nowSeconds - startedAtSeconds)
-  return Math.max(0, FAST_DURATION_SECONDS - elapsed)
+  const elapsed = Math.max(0, Math.floor(nowSeconds - startedAtSeconds))
+  return Math.min(FAST_DURATION_SECONDS, Math.max(0, FAST_DURATION_SECONDS - elapsed))
 }
 
 /** Splits seconds into zero-padded HH / MM / SS strings. */
