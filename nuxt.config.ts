@@ -1,6 +1,21 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  modules: ['@nuxt/ui', '@nuxtjs/robots', '@vite-pwa/nuxt', '@vueuse/nuxt'],
+  modules: ['@nuxt/ui', '@nuxtjs/robots', '@vite-pwa/nuxt', '@vueuse/nuxt', '@nuxtjs/i18n'],
+  i18n: {
+    defaultLocale: 'en',
+    strategy: 'no_prefix',
+    baseUrl: 'https://primitiveweightloss.netlify.app',
+    locales: [
+      { code: 'en', language: 'en-US', file: 'en.json' },
+      { code: 'de', language: 'de-DE', file: 'de.json' },
+    ],
+    // Use the device language when it's German, otherwise English.
+    detectBrowserLanguage: {
+      useCookie: true,
+      cookieKey: 'i18n_locale',
+      fallbackLocale: 'en',
+    },
+  },
   site: {
     url: 'https://primitiveweightloss.netlify.app',
   },

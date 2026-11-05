@@ -1,9 +1,5 @@
-/** Fast lengths the user can choose from, in hours. */
-export const FAST_LENGTH_OPTIONS = [
-  { label: '16:8 (16-hour fast)', value: 16 },
-  { label: '20:4 (20-hour fast)', value: 20 },
-  { label: '24 hours', value: 24 },
-] as const
+/** Fast lengths the user can choose from, in hours. Labels come from the i18n files. */
+export const FAST_LENGTH_OPTIONS = [16, 20, 24] as const
 
 export const DEFAULT_FAST_HOURS = 24
 
@@ -13,7 +9,7 @@ export const FAST_HOURS_STORAGE_KEY = 'fastDurationHours'
 /** Parses a stored value, falling back to the default when it isn't a known option. */
 export function parseFastHours(raw: string | null): number {
   const parsed = Number.parseInt(raw ?? '', 10)
-  return FAST_LENGTH_OPTIONS.some(option => option.value === parsed) ? parsed : DEFAULT_FAST_HOURS
+  return (FAST_LENGTH_OPTIONS as readonly number[]).includes(parsed) ? parsed : DEFAULT_FAST_HOURS
 }
 
 /** User settings, persisted in localStorage. Read after mount so SSR matches the first render. */

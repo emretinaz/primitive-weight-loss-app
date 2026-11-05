@@ -1,0 +1,42 @@
+{
+  "app": {
+    "title": "Primitive Weight Loss"
+  },
+  "start": {
+    "button": "just 💩"
+  },
+  "timer": {
+    "title": "Don't Eat"
+  },
+  "idle": {
+    "title": "Ready when you are",
+    "text": "Tap the button to start your {hours}-hour fast."
+  },
+  "done": {
+    "title": "Enjoy Your Meal"
+  },
+  "quote": {
+    "text": "Simplicity is the ultimate sophistication",
+    "author": "- Leonardo da Vinci"
+  },
+  "disclaimer": {
+    "before": "P.S. This is not a dietary advice for anyone. This site is only made for ",
+    "emphasis": "web development practices",
+    "after": " and for 📱. Enjoy your meal any time 😋"
+  },
+  "install": {
+    "button": "Install app",
+    "iosHint": "Open this page in Safari, tap Share, then “Add to Home Screen”.",
+    "safariHint": "Tap Share, then “Add to Home Screen”."
+  },
+  "settings": {
+    "open": "Settings",
+    "title": "Settings",
+    "fastLength": "Fast length",
+    "options": {
+      "16": "16:8 (16-hour fast)",
+      "20": "20:4 (20-hour fast)",
+      "24": "24 hours"
+    }
+  }
+}

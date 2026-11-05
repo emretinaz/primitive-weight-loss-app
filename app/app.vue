@@ -1,7 +1,7 @@
 <template>
   <UContainer class="app">
     <header class="header">
-      <h1 class="page-title">Primitive Weight Loss</h1>
+      <h1 class="page-title">{{ $t('app.title') }}</h1>
 
       <div class="start-area">
         <UButton
@@ -10,7 +10,7 @@
           class="start-button"
           @click="start"
         >
-          just 💩
+          {{ $t('start.button') }}
         </UButton>
       </div>
     </header>
@@ -19,8 +19,8 @@
       <div v-if="status === 'loading'" class="base-timer-placeholder" aria-hidden="true"></div>
 
       <div v-else-if="status === 'idle'" class="idle" role="status">
-        <p class="idle__title">Ready when you are</p>
-        <p class="idle__text">Tap the button to start your {{ fastHours }}-hour fast.</p>
+        <p class="idle__title">{{ $t('idle.title') }}</p>
+        <p class="idle__text">{{ $t('idle.text', { hours: fastHours }) }}</p>
       </div>
 
       <div v-else-if="status === 'fasting'" class="base-timer">
@@ -37,22 +37,24 @@
         </svg>
 
         <div class="base-timer__label">
-          <p class="timer-title">Don't Eat</p>
+          <p class="timer-title">{{ $t('timer.title') }}</p>
           <p class="timer-digits" role="timer">{{ clock.hours }} : {{ clock.minutes }} : {{ clock.seconds }}</p>
         </div>
       </div>
 
       <div v-else class="done" role="status" aria-live="polite">
-        <p class="done__title">Enjoy Your Meal</p>
+        <p class="done__title">{{ $t('done.title') }}</p>
         <p class="done__emoji" aria-hidden="true">🥘</p>
       </div>
     </main>
 
     <footer class="footer">
-      <p class="quote">Simplicity is the ultimate sophistication <br><i class="quote__author">- Leonardo da Vinci</i></p>
-      <p class="disclaimer">P.S. This is not a dietary advice for
-        anyone. This site is only made for <b> web development practices</b> and for 📱. <br> Enjoy your meal any time
-        😋</p>
+      <p class="quote">
+        {{ $t('quote.text') }} <br><i class="quote__author">{{ $t('quote.author') }}</i>
+      </p>
+      <p class="disclaimer">
+        {{ $t('disclaimer.before') }}<b>{{ $t('disclaimer.emphasis') }}</b>{{ $t('disclaimer.after') }}
+      </p>
     </footer>
 
     <div class="install-area">
@@ -63,13 +65,13 @@
         icon="i-lucide-download"
         @click="install"
       >
-        Install app
+        {{ $t('install.button') }}
       </UButton>
       <p v-else-if="showIosHint" class="install-hint">
-        Open this page in Safari, tap Share, then “Add to Home Screen”.
+        {{ $t('install.iosHint') }}
       </p>
       <p v-else-if="showIosSafariHint" class="install-hint">
-        Tap Share, then “Add to Home Screen”.
+        {{ $t('install.safariHint') }}
       </p>
     </div>
 
@@ -78,18 +80,18 @@
         icon="i-lucide-settings"
         color="neutral"
         variant="ghost"
-        aria-label="Settings"
+        :aria-label="$t('settings.open')"
         @click="settingsOpen = true"
       />
     </div>
 
-    <UModal v-model:open="settingsOpen" title="Settings">
+    <UModal v-model:open="settingsOpen" :title="$t('settings.title')">
       <template #body>
         <fieldset class="settings">
-          <legend class="settings__legend">Fast length</legend>
+          <legend class="settings__legend">{{ $t('settings.fastLength') }}</legend>
           <URadioGroup
             v-model="fastHours"
-            :items="FAST_LENGTH_OPTIONS"
+            :items="fastLengthItems"
             orientation="vertical"
             size="xl"
             class="settings__options"
@@ -101,7 +103,16 @@
 </template>
 
 <script setup lang="ts">
-useHead({ htmlAttrs: { lang: 'en' } })
+const { t } = useI18n()
+
+// Keeps <html lang> in step with the active locale (en or de).
+const localeHead = useLocaleHead({ addDirAttribute: true })
+useHead(computed(() => ({ htmlAttrs: { lang: localeHead.value.htmlAttrs?.lang ?? 'en' } })))
+
+// Labels are translated; the values stay numeric for the timer.
+const fastLengthItems = computed(() =>
+  FAST_LENGTH_OPTIONS.map(hours => ({ value: hours, label: t(`settings.options.${hours}`) })),
+)
 
 const settingsOpen = ref(false)
 const { canInstall, showIosHint, showIosSafariHint, install } = usePwaInstall()

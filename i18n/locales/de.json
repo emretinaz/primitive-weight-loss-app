@@ -1,0 +1,42 @@
+{
+  "app": {
+    "title": "Primitive Abnehm-App"
+  },
+  "start": {
+    "button": "jetzt 💩"
+  },
+  "timer": {
+    "title": "Nicht essen"
+  },
+  "idle": {
+    "title": "Bereit, wenn du es bist",
+    "text": "Tippe auf den Knopf, um dein {hours}-Stunden-Fasten zu starten."
+  },
+  "done": {
+    "title": "Guten Appetit"
+  },
+  "quote": {
+    "text": "Einfachheit ist die höchste Form der Raffinesse",
+    "author": "- Leonardo da Vinci"
+  },
+  "disclaimer": {
+    "before": "P.S. Dies ist keine Ernährungsberatung für irgendjemanden. Diese Seite ist nur für ",
+    "emphasis": "Webentwicklungs-Übungen",
+    "after": " und für 📱 gedacht. Guten Appetit zu jeder Zeit 😋"
+  },
+  "install": {
+    "button": "App installieren",
+    "iosHint": "Öffne diese Seite in Safari, tippe auf Teilen und dann auf „Zum Home-Bildschirm“.",
+    "safariHint": "Tippe auf Teilen und dann auf „Zum Home-Bildschirm“."
+  },
+  "settings": {
+    "open": "Einstellungen",
+    "title": "Einstellungen",
+    "fastLength": "Fastendauer",
+    "options": {
+      "16": "16:8 (16-Stunden-Fasten)",
+      "20": "20:4 (20-Stunden-Fasten)",
+      "24": "24 Stunden"
+    }
+  }
+}
