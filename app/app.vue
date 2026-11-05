@@ -151,7 +151,6 @@ const ringDash = computed(() => `${(RING_ARC_LENGTH * progress.value).toFixed(2)
 }
 
 .install-area {
-  margin-top: 2rem;
   display: flex;
   justify-content: center;
   text-align: center;
